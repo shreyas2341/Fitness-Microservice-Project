@@ -1,0 +1,27 @@
+server:
+  port: ${ACTIVITY_SERVICE_PORT}
+
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_ACTIVITY_URI}
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOSTNAME}:${EUREKA_PORT}/eureka/
+
+rabbitmq:
+  exchange:
+    name: ${RABBITMQ_EXCHANGE}
+  queue:
+    name: ${RABBITMQ_QUEUE}
+  routing:
+    key: ${RABBITMQ_ROUTING_KEY}
