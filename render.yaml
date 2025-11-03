@@ -1,10 +1,94 @@
+# render.yaml — Blueprint for Fitness Microservice Backend
+# Place at repository root (next to the Fitness-Microservice-Project-Backend folder)
+
+envVars:
+  # global placeholders — update secrets & real connection strings in Render dashboard later
+  - key: POSTGRES_URL
+    value: "jdbc:postgresql://PLACEHOLDER_POSTGRES_HOST:5432/fitness_user_db"
+  - key: POSTGRES_USER
+    value: "postgres"
+  - key: POSTGRES_PASSWORD
+    value: "postgres-password"
+  - key: MONGODB_ACTIVITY_URI
+    value: "mongodb://PLACEHOLDER_MONGO_HOST:27017/fitnessactivity"
+  - key: MONGODB_AI_URI
+    value: "mongodb://PLACEHOLDER_MONGO_HOST:27017/fitnessrecommendation"
+  - key: KEYCLOAK_URL
+    value: "http://PLACEHOLDER_KEYCLOAK:8181"
+  - key: KEYCLOAK_REALM
+    value: "fitness-oauth2"
+  - key: KEYCLOAK_CLIENT_ID
+    value: "fitness-client"
+  - key: KEYCLOAK_CLIENT_SECRET
+    value: ""   # add secret in Render dashboard
+  - key: RABBITMQ_HOST
+    value: "PLACEHOLDER_RABBIT_HOST"
+  - key: RABBITMQ_PORT
+    value: "5672"
+  - key: RABBITMQ_USERNAME
+    value: "guest"
+  - key: RABBITMQ_PASSWORD
+    value: "guest"
+  - key: GEMINI_API_KEY
+    value: ""   # add secret in Render dashboard
+
 services:
   - type: web
-    name: fitness-backend
-    runtime: docker
-    rootDir: "Fitness MicroService Project/Fitness MicroService Project-Backend"
+    name: fitness-config-server
+    env: docker
+    rootDir: Fitness-Microservice-Project-Backend/configserver
     plan: free
-    dockerfilePath: Dockerfile
+    autoDeploy: true
     envVars:
       - key: SERVER_PORT
-        value: 8080
+        value: "8888"
+
+  - type: web
+    name: fitness-eureka
+    env: docker
+    rootDir: Fitness-Microservice-Project-Backend/eureka
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: SERVER_PORT
+        value: "8761"
+
+  - type: web
+    name: fitness-gateway
+    env: docker
+    rootDir: Fitness-Microservice-Project-Backend/gateway
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: SERVER_PORT
+        value: "8080"
+
+  - type: web
+    name: fitness-user-service
+    env: docker
+    rootDir: Fitness-Microservice-Project-Backend/userservice
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: SERVER_PORT
+        value: "8081"
+
+  - type: web
+    name: fitness-activity-service
+    env: docker
+    rootDir: Fitness-Microservice-Project-Backend/activityservice
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: SERVER_PORT
+        value: "8082"
+
+  - type: web
+    name: fitness-ai-service
+    env: docker
+    rootDir: Fitness-Microservice-Project-Backend/aiservice
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: SERVER_PORT
+        value: "8083"
